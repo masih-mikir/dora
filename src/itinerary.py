@@ -69,7 +69,16 @@ def euclidian_distance(origin_latitude, origin_longitude, destination_latitude, 
 
 def get_itinerary(recreations, restaurants, origin_latitude, origin_longitude, start_time, end_time):
     current_location = {
-        "recreation_name": "Your Location: <br>" + str(origin_latitude) + ", " + str(origin_longitude)
+        "recreation_id": 0,
+        "recreation_name": "Your Location: <br>" + str(origin_latitude) + ", " + str(origin_longitude),
+        "recreation_time_minute": 0,
+        "recreation_price": 0,
+        "position_lat": origin_latitude,
+        "position_long": origin_longitude,
+        "recreation_image": "https://www.enisa.europa.eu/topics/trainings-for-cybersecurity-specialists/online-training-material/images/whitakergroupgooglelocationicon.png/image",
+        "recreation_city": "",
+        "recreation_description": "",
+        "category": "recreation"
     }
 
     max_trip_minute = get_max_trip_minute(start_time, end_time)
