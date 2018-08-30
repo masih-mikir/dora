@@ -1,10 +1,11 @@
+import random
 from math import sqrt
 
 recreations = [
     {
         "recreation_id": 1,
         "recreation_name": "Taman Impian Jaya Ancol",
-        "recreation_time_minute": 120,
+        "recreation_time_minute": 300,
         "recreation_price": 200000,
         "position_lat": -6.126219,
         "position_long": 106.831017,
@@ -68,23 +69,27 @@ def euclidian_distance(origin_latitude, origin_longitude, destination_latitude, 
 
 
 def get_itinerary(recreations, restaurants, origin_latitude, origin_longitude, start_time, end_time):
-    current_location = {
-        "recreation_id": 0,
-        "recreation_name": "Your Location: <br>" + str(origin_latitude) + ", " + str(origin_longitude),
-        "recreation_time_minute": 0,
-        "recreation_price": 0,
-        "position_lat": origin_latitude,
-        "position_long": origin_longitude,
-        "recreation_image": "https://www.enisa.europa.eu/topics/trainings-for-cybersecurity-specialists/online-training-material/images/whitakergroupgooglelocationicon.png/image",
-        "recreation_city": "",
-        "recreation_description": "",
-        "category": "recreation"
-    }
+    # current_location = {
+    #     "recreation_id": 0,
+    #     "recreation_name": "Your Location: <br>" + str(origin_latitude) + ", " + str(origin_longitude),
+    #     "recreation_time_minute": 0,
+    #     "recreation_price": 0,
+    #     "position_lat": origin_latitude,
+    #     "position_long": origin_longitude,
+    #     "recreation_image": "https://www.enisa.europa.eu/topics/trainings-for-cybersecurity-specialists/online-training-material/images/whitakergroupgooglelocationicon.png/image",
+    #     "recreation_city": "",
+    #     "recreation_description": "",
+    #     "category": "recreation"
+    # }
 
     max_trip_minute = get_max_trip_minute(start_time, end_time)
 
+    random_place = recreations[random.randint(0, len(recreations))]
+    origin_latitude = random_place['position_lat']
+    origin_longitude = random_place['position_long']
+
     is_eat = False
-    trip = [current_location]
+    trip = []
     trip_minute = 0
     while trip_minute <= max_trip_minute and len(recreations) > 0:
         distances = []
@@ -92,7 +97,6 @@ def get_itinerary(recreations, restaurants, origin_latitude, origin_longitude, s
             distances.append(euclidian_distance(origin_latitude, origin_longitude, recreation['position_lat'],
                                                 recreation['position_long']))
         selected_recreation = recreations.pop(distances.index(min(distances)))
-        print(trip_minute)
         if start_time + (trip_minute + selected_recreation['recreation_time_minute']) > 720 and is_eat is False:
             distances_restaurant = []
             for restaurant in restaurants:
@@ -105,6 +109,7 @@ def get_itinerary(recreations, restaurants, origin_latitude, origin_longitude, s
 
             transport_cost = get_transport_cost(min(distances_restaurant))
             transport_time = get_transport_time(min(distances_restaurant))
+            trip_minute += transport_time
             transport = {
                 'category': 'transport',
                 'cost': transport_cost,
@@ -117,6 +122,7 @@ def get_itinerary(recreations, restaurants, origin_latitude, origin_longitude, s
         else:
             transport_cost = get_transport_cost(min(distances))
             transport_time = get_transport_time(min(distances))
+            trip_minute += transport_time
             transport = {
                 'category': 'transport',
                 'cost': transport_cost,
@@ -129,7 +135,7 @@ def get_itinerary(recreations, restaurants, origin_latitude, origin_longitude, s
 
         origin_latitude = trip[-1]['position_lat']
         origin_longitude = trip[-1]['position_long']
-    return trip[2:]
+    return trip[1:]
 
 
 def get_max_trip_minute(start_time, end_time):
