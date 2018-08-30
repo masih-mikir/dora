@@ -84,8 +84,7 @@ def get_itinerary(recreations, restaurants, origin_latitude, origin_longitude, s
     max_trip_minute = get_max_trip_minute(start_time, end_time)
 
     is_eat = False
-    trip = []
-    trip.append(current_location)
+    trip = [current_location]
     trip_minute = 0
     while trip_minute <= max_trip_minute and len(recreations) > 0:
         distances = []
@@ -93,7 +92,8 @@ def get_itinerary(recreations, restaurants, origin_latitude, origin_longitude, s
             distances.append(euclidian_distance(origin_latitude, origin_longitude, recreation['position_lat'],
                                                 recreation['position_long']))
         selected_recreation = recreations.pop(distances.index(min(distances)))
-        if start_time + ((trip_minute + selected_recreation['recreation_time_minute']) // 60) > 12 and is_eat is False:
+        print(trip_minute)
+        if start_time + (trip_minute + selected_recreation['recreation_time_minute']) > 720 and is_eat is False:
             distances_restaurant = []
             for restaurant in restaurants:
                 distances_restaurant.append(
@@ -129,7 +129,7 @@ def get_itinerary(recreations, restaurants, origin_latitude, origin_longitude, s
 
         origin_latitude = trip[-1]['position_lat']
         origin_longitude = trip[-1]['position_long']
-    return trip
+    return trip[2:]
 
 
 def get_max_trip_minute(start_time, end_time):
