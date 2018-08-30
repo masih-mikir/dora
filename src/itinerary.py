@@ -68,10 +68,15 @@ def euclidian_distance(origin_latitude, origin_longitude, destination_latitude, 
 
 
 def get_itinerary(recreations, restaurants, origin_latitude, origin_longitude, start_time, end_time):
+    current_location = {
+        "recreation_name": "Your Location: <br>" + str(origin_latitude) + ", " + str(origin_longitude)
+    }
+
     max_trip_minute = get_max_trip_minute(start_time, end_time)
 
     is_eat = False
     trip = []
+    trip.append(current_location)
     trip_minute = 0
     while trip_minute <= max_trip_minute and len(recreations) > 0:
         distances = []
@@ -115,7 +120,7 @@ def get_itinerary(recreations, restaurants, origin_latitude, origin_longitude, s
 
         origin_latitude = trip[-1]['position_lat']
         origin_longitude = trip[-1]['position_long']
-    return trip[1:]
+    return trip
 
 
 def get_max_trip_minute(start_time, end_time):
