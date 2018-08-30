@@ -88,18 +88,43 @@ def get_itinerary(recreations, restaurants, origin_latitude, origin_longitude, s
             selected_restaurant = restaurants.pop(distances_restaurant.index(min(distances_restaurant)))
             trip_minute += selected_restaurant['restaurant_time_minute']
             selected_restaurant['category'] = 'restaurant'
+
+            transport_cost = get_transport_cost(min(distances_restaurant))
+            transport_time = get_transport_time(min(distances_restaurant))
+            transport = {
+                'category': 'transport',
+                'cost': transport_cost,
+                'time': transport_time
+            }
+            trip.append(transport)
             trip.append(selected_restaurant)
             recreations.append(selected_recreation)
             is_eat = True
         else:
+            transport_cost = get_transport_cost(min(distances))
+            transport_time = get_transport_time(min(distances))
+            transport = {
+                'category': 'transport',
+                'cost': transport_cost,
+                'time': transport_time
+            }
+            trip.append(transport)
             trip_minute += selected_recreation['recreation_time_minute']
             selected_recreation['category'] = 'recreation'
             trip.append(selected_recreation)
 
         origin_latitude = trip[-1]['position_lat']
         origin_longitude = trip[-1]['position_long']
-    return trip
+    return trip[1:]
 
 
 def get_max_trip_minute(start_time, end_time):
     return (end_time - start_time) * 60
+
+
+def get_transport_cost(distance):
+    return int(distance * 700000)
+
+
+def get_transport_time(distance):
+    return int(distance * 500)
