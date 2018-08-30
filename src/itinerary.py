@@ -84,7 +84,7 @@ def get_itinerary(recreations, restaurants, origin_latitude, origin_longitude, s
 
     max_trip_minute = get_max_trip_minute(start_time, end_time)
 
-    random_place = recreations[random.randint(0, len(recreations))]
+    random_place = recreations[random.randint(0, len(recreations) - 1)]
     origin_latitude = random_place['position_lat']
     origin_longitude = random_place['position_long']
 
