@@ -58,7 +58,6 @@ def get_itinerary(recreations, origin_latitude, origin_longitude, start_time, en
         for recreation in recreations:
             distances.append(euclidian_distance(origin_latitude, origin_longitude, recreation['position_lat'],
                                                 recreation['position_long']))
-        print(distances)
         recreation_trip.append(recreations.pop(distances.index(min(distances))))
         origin_latitude = recreation_trip[-1]['position_lat']
         origin_longitude = recreation_trip[-1]['position_long']
