@@ -15,18 +15,16 @@ def itineraries():
         longitude = float(request.form['lng'])
         start_time = int(request.form['start_time'])
         end_time = int(request.form['end_time'])
-        header = {
-            'content-type': 'application/json'
-        }
         data = {
             'recreation_city': city
         }
-        response = requests.post('http://localhost:3000/api/recreation/city', data=data)
-        response_content = json.loads(response.text)
-        print(response_content)
-        trip = itinerary.get_itinerary(response_content['data'], latitude, longitude, start_time, end_time)
+        # response = requests.post('http://localhost:3000/api/recreation/city', data=data)
+        # response_content = json.loads(response.text)
+        # trip = itinerary.get_itinerary(response_content['data'], latitude, longitude, start_time, end_time)
+        trip = itinerary.get_itinerary(itinerary.recreations.copy(), itinerary.restaurants.copy(), latitude, longitude, start_time,
+                                       end_time)
         response = app.response_class(
-            response=json.dumps(trip),
+            response=json.dumps({'data': trip}),
             status=200,
             mimetype='application/json'
         )
