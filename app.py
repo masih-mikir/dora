@@ -1,13 +1,17 @@
 import json
 from flask import Flask, request
+from flask_cors import CORS, cross_origin
 import requests
 
 from src import itinerary
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.route('/itineraries', methods=['POST'])
+@cross_origin()
 def itineraries():
     if request.method == 'POST':
         city = request.form['city']
@@ -21,7 +25,8 @@ def itineraries():
         # response = requests.post('http://localhost:3000/api/recreation/city', data=data)
         # response_content = json.loads(response.text)
         # trip = itinerary.get_itinerary(response_content['data'], latitude, longitude, start_time, end_time)
-        trip = itinerary.get_itinerary(itinerary.recreations.copy(), itinerary.restaurants.copy(), latitude, longitude, start_time,
+        trip = itinerary.get_itinerary(itinerary.recreations.copy(), itinerary.restaurants.copy(), latitude, longitude,
+                                       start_time,
                                        end_time)
         response = app.response_class(
             response=json.dumps({'data': trip}),
