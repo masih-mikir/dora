@@ -42,17 +42,18 @@ def euclidian_distance(origin_latitude, origin_longitude, destination_latitude, 
     return distance
 
 
-def get_itinerary(recreations, origin_latitude, origin_longitude):
+def get_itinerary(recreations, origin_latitude, origin_longitude, start_time, end_time):
     """
     Using brute force algorithm to decide the route.
     :type recreations: list
     :return: array of places
     """
-    MAX_TRIP_MINUTE = 600
+
+    max_trip_minute = get_max_trip_minute(start_time, end_time)
 
     recreation_trip = []
     trip_minute = 0
-    while trip_minute < MAX_TRIP_MINUTE and len(recreations) > 0:
+    while trip_minute <= max_trip_minute and len(recreations) > 0:
         distances = []
         for recreation in recreations:
             distances.append(euclidian_distance(origin_latitude, origin_longitude, recreation['position_lat'],
@@ -62,3 +63,7 @@ def get_itinerary(recreations, origin_latitude, origin_longitude):
         origin_latitude = recreation_trip[-1]['position_lat']
         origin_longitude = recreation_trip[-1]['position_long']
     return recreation_trip
+
+
+def get_max_trip_minute(start_time, end_time):
+    return (end_time - start_time) * 60
