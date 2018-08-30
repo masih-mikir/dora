@@ -42,12 +42,7 @@ def euclidian_distance(origin_latitude, origin_longitude, destination_latitude, 
     return distance
 
 
-print(
-    euclidian_distance(recreations[0]['position_lat'], recreations[0]['position_long'], recreations[1]['position_lat'],
-                       recreations[1]['position_long']))
-
-
-def get_itiniery(recreations, origin_latitude, origin_longitude):
+def get_itinerary(recreations, origin_latitude, origin_longitude):
     """
     Using brute force algorithm to decide the route.
     :type recreations: list
@@ -67,6 +62,3 @@ def get_itiniery(recreations, origin_latitude, origin_longitude):
         origin_latitude = recreation_trip[-1]['position_lat']
         origin_longitude = recreation_trip[-1]['position_long']
     return recreation_trip
-
-
-print(get_itiniery(recreations, -6.132502, 106.812045))
