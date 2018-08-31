@@ -139,7 +139,7 @@ def get_itinerary(recreations, restaurants, origin_latitude, origin_longitude, s
 
 
 def get_max_trip_minute(start_time, end_time):
-    return (end_time - start_time) * 60
+    return end_time - start_time
 
 
 def get_transport_cost(distance):
